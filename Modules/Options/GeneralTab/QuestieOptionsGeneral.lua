@@ -77,7 +77,7 @@ function QuestieOptions.tabs.general:Initialize()
                     questAnnounceChannel = {
                         type = "select",
                         order = 7.2,
-                        values = _GetAnnounceChannels(),
+                        values = function() return _GetAnnounceChannels(); end,
                         style = 'dropdown',
                         disabled = function() return Questie.db.profile.questieShutUp end,
                         name = function() return l10n('Channels to announce in') end,
@@ -324,13 +324,15 @@ function QuestieOptions.tabs.general:Initialize()
                         type = "select",
                         style = "radio",
                         width = 3,
-                        name = l10n("Which available quests should be displayed"),
-                        values = {
-                            [Questie.LOWLEVEL_NONE] = l10n("Show only quests granting experience (Default)"),
-                            [Questie.LOWLEVEL_ALL] = l10n("Show all low level quests"),
-                            [Questie.LOWLEVEL_OFFSET] = l10n("Show quests to a set level below the player"),
-                            [Questie.LOWLEVEL_RANGE] = l10n("Show quests between two set levels"),
-                        },
+                        name = function() return l10n("Which available quests should be displayed"); end,
+                        values = function()
+                            return {
+                                [Questie.LOWLEVEL_NONE] = l10n("Show only quests granting experience (Default)"),
+                                [Questie.LOWLEVEL_ALL] = l10n("Show all low level quests"),
+                                [Questie.LOWLEVEL_OFFSET] = l10n("Show quests to a set level below the player"),
+                                [Questie.LOWLEVEL_RANGE] = l10n("Show quests between two set levels"),
+                            };
+                        end,
                         get = function () return Questie.db.profile.lowLevelStyle end,
                         set = function (_, value)
                             Questie.db.profile.lowLevelStyle = value
